@@ -10,6 +10,8 @@ for 3.3V bus
 
 #include <Wire.h>
 
+#define TEMP_ADDR 72
+
 void scan(){
 Serial.println(" Scanning I2C Addresses");
 uint8_t cnt=0;
@@ -153,6 +155,20 @@ Wire.begin();
 scan();
 Serial.println();
 eepromSize();
+
 }
 
-void loop(){}
+void loop(){
+  Wire.beginTransmission(TEMP_ADDR);
+  Wire.write(0);
+  Wire.endTransmission();
+
+  Wire.requestFrom(TEMP_ADDR,1);
+  while(Wire.available()==0);
+  int c = Wire.read();
+
+  Serial.print(c);
+  Serial.print("c");
+
+  delay(500);
+  }
